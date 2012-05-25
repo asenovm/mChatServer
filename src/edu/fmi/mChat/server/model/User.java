@@ -1,5 +1,12 @@
 package edu.fmi.mChat.server.model;
 
+/**
+ * 
+ * Model class for users that are registered within the server
+ * 
+ * @author martin
+ * 
+ */
 public class User {
 
 	/**
@@ -10,10 +17,21 @@ public class User {
 
 	private final String username;
 
+	/**
+	 * Creates a new User with the username given
+	 * 
+	 * @param username
+	 *            the username that is behind this user
+	 */
 	public User(final String username) {
 		this.username = username;
 	}
 
+	/**
+	 * Returns the username that is associated with this <strong>User</strong>
+	 * 
+	 * @return the username behind this <strong>User</strong>
+	 */
 	public String getUsername() {
 		return username;
 	}

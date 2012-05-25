@@ -2,29 +2,17 @@ package edu.fmi.mChat.server.model;
 
 import edu.fmi.mChat.server.enums.RequestType;
 
-public class MetaRequest {
-
+/**
+ * Implementations of this interface are model classes, holding the information
+ * about the client request that has been sent
+ * 
+ * @author martin
+ * 
+ */
+public interface MetaRequest {
 	/**
-	 * for debugging purposes only
+	 * 
+	 * @return the request type of this request
 	 */
-	@SuppressWarnings("unused")
-	private static final String TAG = MetaRequest.class.getSimpleName();
-
-	private final RequestType requestType;
-
-	private final String[] parameters;
-
-	public MetaRequest(final RequestType type, final String... parameters) {
-		requestType = type;
-		this.parameters = parameters;
-	}
-
-	public RequestType getRequestType() {
-		return requestType;
-	}
-
-	public String[] getParameters() {
-		return parameters;
-	}
-
+	RequestType getRequestType();
 }

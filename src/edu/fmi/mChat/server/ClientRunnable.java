@@ -7,6 +7,7 @@ import java.net.Socket;
 import java.util.logging.Logger;
 
 import edu.fmi.mChat.server.model.MetaRequest;
+import edu.fmi.mChat.server.model.RegisterRequest;
 
 public class ClientRunnable implements Runnable {
 
@@ -28,13 +29,15 @@ public class ClientRunnable implements Runnable {
 			final BufferedReader reader = new BufferedReader(
 					new InputStreamReader(clientSocket.getInputStream()));
 			final String inputLine = reader.readLine();
-			System.out.println("inputLine " + inputLine);
+
 			final RequestParser parser = new RequestParser();
 			final MetaRequest metaRequest = parser.parse(inputLine);
+
 			switch (metaRequest.getRequestType()) {
 			case REGISTER:
+				final RegisterRequest registerRequest = (RegisterRequest) metaRequest;
 				ChatServer.getInstance().registerUser(
-						metaRequest.getParameters()[1]);
+						registerRequest.getUsername());
 				break;
 			}
 
