@@ -3,7 +3,11 @@ package edu.fmi.mChat.server;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.logging.Logger;
+
+import edu.fmi.mChat.server.model.User;
 
 public class ChatServer {
 
@@ -14,6 +18,33 @@ public class ChatServer {
 	private static final String TAG = ChatServer.class.getSimpleName();
 
 	private static final int PORT_NUMBER = 65535;
+
+	private static ChatServer serverInstance;
+
+	private final Set<User> registeredUsers;
+
+	private final Object lock;
+
+	private ChatServer() {
+		registeredUsers = new HashSet<User>();
+		lock = new Object();
+	}
+
+	public static synchronized ChatServer getInstance() {
+		if (serverInstance == null) {
+			serverInstance = new ChatServer();
+		}
+		return serverInstance;
+	}
+
+	public boolean registerUser(final String username) {
+		// we need synchornization when adding and getting a list of all the
+		// users
+		synchronized (lock) {
+			System.out.println("new user " + username);
+			return registeredUsers.add(new User(username));
+		}
+	}
 
 	public static void main(String[] args) {
 		try {

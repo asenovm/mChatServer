@@ -1,9 +1,12 @@
 package edu.fmi.mChat.server;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.Socket;
-import java.util.Scanner;
 import java.util.logging.Logger;
+
+import edu.fmi.mChat.server.model.MetaRequest;
 
 public class ClientRunnable implements Runnable {
 
@@ -21,14 +24,22 @@ public class ClientRunnable implements Runnable {
 
 	@Override
 	public void run() {
-		Scanner scanner;
 		try {
-			scanner = new Scanner(clientSocket.getInputStream());
-			while (scanner.hasNextLine()) {
-				System.out.println(scanner.nextLine());
+			final BufferedReader reader = new BufferedReader(
+					new InputStreamReader(clientSocket.getInputStream()));
+			final String inputLine = reader.readLine();
+			System.out.println("inputLine " + inputLine);
+			final RequestParser parser = new RequestParser();
+			final MetaRequest metaRequest = parser.parse(inputLine);
+			switch (metaRequest.getRequestType()) {
+			case REGISTER:
+				ChatServer.getInstance().registerUser(
+						metaRequest.getParameters()[1]);
+				break;
 			}
-		} catch (IOException e) {
-			Logger.getAnonymousLogger().throwing(TAG, "run", e);
+
+		} catch (IOException ex) {
+			Logger.getAnonymousLogger().throwing(TAG, "run", ex);
 		}
 	}
 }
