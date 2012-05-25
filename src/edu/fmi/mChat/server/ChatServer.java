@@ -3,6 +3,7 @@ package edu.fmi.mChat.server;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.logging.Logger;
 
 public class ChatServer {
 
@@ -22,9 +23,8 @@ public class ChatServer {
 				final Runnable clientRunnable = new ClientRunnable(clientSocket);
 				new Thread(clientRunnable).start();
 			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (IOException ex) {
+			Logger.getAnonymousLogger().throwing(TAG, "main", ex);
 		}
 	}
 
