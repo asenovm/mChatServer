@@ -28,16 +28,14 @@ public class ClientRunnable implements Runnable {
 		BufferedReader reader = null;
 		PrintWriter writer = null;
 		try {
-			reader = new BufferedReader(new InputStreamReader(clientSocket
-					.getInputStream()));
+			reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 			writer = new PrintWriter(clientSocket.getOutputStream());
 
-			final String inputLine = reader.readLine();
-
 			final RequestParser parser = new RequestParser();
-			final MetaRequest metaRequest = parser.parse(inputLine);
-			final BaseServerResponse response = ResponseFactory
-					.createResponse(metaRequest);
+			final MetaRequest metaRequest = parser.parse(reader.readLine());
+
+			final BaseServerResponse response = ResponseFactory.createResponse(metaRequest);
+
 			writer.write(response.toString());
 			writer.flush();
 

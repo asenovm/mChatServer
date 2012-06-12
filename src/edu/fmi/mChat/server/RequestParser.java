@@ -1,7 +1,5 @@
 package edu.fmi.mChat.server;
 
-import java.util.Arrays;
-
 import edu.fmi.mChat.server.model.MetaRequest;
 import edu.fmi.mChat.server.model.RegisterRequest;
 
@@ -18,6 +16,8 @@ public class RequestParser {
 	 */
 	private static final String REQUEST_REGISTER = "user";
 
+	private static final String REQUEST_SEND_MESSAGE = "send_to";
+
 	/**
 	 * Returns a meta request associated with the request String specified.
 	 * 
@@ -29,12 +29,12 @@ public class RequestParser {
 	 */
 	public MetaRequest parse(final String request) {
 		final String[] parsedRequest = request.split(" ");
-		System.out.println(Arrays.toString(parsedRequest));
 		if (REQUEST_REGISTER.equals(parsedRequest[0])) {
 			return new RegisterRequest(parsedRequest[1]);
+		} else if (REQUEST_SEND_MESSAGE.equals(parsedRequest[0])) {
+			System.out.println("send message!!!!");
 		}
 		// as for now
 		return null;
 	}
-
 }

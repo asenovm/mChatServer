@@ -11,16 +11,14 @@ public class ResponseFactory {
 	@SuppressWarnings("unused")
 	private static final String TAG = ResponseFactory.class.getSimpleName();
 
-	public static BaseServerResponse createResponse(
-			final MetaRequest metaRequest) {
+	public static BaseServerResponse createResponse(final MetaRequest metaRequest) {
 		switch (metaRequest.getRequestType()) {
 		case REGISTER:
 			final RegisterRequest registerRequest = (RegisterRequest) metaRequest;
 
-			final boolean isRegistered = !ChatServer.getInstance()
-					.registerUser(registerRequest.getUsername());
-			return new RegisterResponse(isRegistered, registerRequest
-					.getUsername());
+			final boolean isRegistered = !ChatServer.getInstance().registerUser(
+					registerRequest.getUsername());
+			return new RegisterResponse(isRegistered, registerRequest.getUsername());
 		default:
 			return null;
 		}
