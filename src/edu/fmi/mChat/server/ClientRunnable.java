@@ -25,11 +25,12 @@ public class ClientRunnable implements Runnable {
 
 	@Override
 	public void run() {
+		BufferedReader reader = null;
+		PrintWriter writer = null;
 		try {
-			final BufferedReader reader = new BufferedReader(
-					new InputStreamReader(clientSocket.getInputStream()));
-			final PrintWriter writer = new PrintWriter(clientSocket
-					.getOutputStream());
+			reader = new BufferedReader(new InputStreamReader(clientSocket
+					.getInputStream()));
+			writer = new PrintWriter(clientSocket.getOutputStream());
 
 			final String inputLine = reader.readLine();
 
@@ -38,14 +39,18 @@ public class ClientRunnable implements Runnable {
 
 			final BaseServerResponse response = ResponseFactory
 					.createResponse(metaRequest);
-			System.out.println("writing in the client socket "
-					+ response.toString());
 			writer.write(response.toString());
 			writer.flush();
-			writer.close();
 
 		} catch (IOException ex) {
 			Logger.getAnonymousLogger().throwing(TAG, "run", ex);
+		} finally {
+			writer.close();
+			try {
+				reader.close();
+			} catch (IOException e) {
+				Logger.getAnonymousLogger().throwing(TAG, "run", e);
+			}
 		}
 	}
 }
