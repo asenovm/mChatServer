@@ -36,7 +36,6 @@ public class ClientRunnable implements Runnable {
 
 			final RequestParser parser = new RequestParser();
 			final MetaRequest metaRequest = parser.parse(inputLine);
-
 			final BaseServerResponse response = ResponseFactory
 					.createResponse(metaRequest);
 			writer.write(response.toString());
