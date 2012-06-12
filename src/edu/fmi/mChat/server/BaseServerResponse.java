@@ -12,8 +12,4 @@ public abstract class BaseServerResponse {
 
 	protected String responseMessage;
 
-	abstract void setSuccessfull(final boolean isSuccessfull);
-
-	abstract void setUsername(final String username);
-
 }

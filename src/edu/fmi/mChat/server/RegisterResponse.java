@@ -22,16 +22,6 @@ public class RegisterResponse extends BaseServerResponse {
 	}
 
 	@Override
-	void setSuccessfull(boolean isSuccessfull) {
-		// blank
-	}
-
-	@Override
-	void setUsername(String username) {
-		this.username = username;
-	}
-
-	@Override
 	public String toString() {
 		final StringBuilder stringBuilder = new StringBuilder();
 		if (responseCode == ResponseCode.REGISTER_OK) {

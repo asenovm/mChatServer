@@ -14,7 +14,7 @@ public class ChatServer {
 	/**
 	 * for debugging purposes only
 	 */
-	@SuppressWarnings("unused")
+	// @SuppressWarnings("unused")
 	private static final String TAG = ChatServer.class.getSimpleName();
 
 	private static final int PORT_NUMBER = 65535;
@@ -35,7 +35,6 @@ public class ChatServer {
 	}
 
 	public synchronized boolean registerUser(final String username) {
-		System.out.println("new user " + username);
 		return registeredUsers.add(new User(username));
 	}
 

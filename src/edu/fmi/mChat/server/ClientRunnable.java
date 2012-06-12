@@ -14,7 +14,7 @@ public class ClientRunnable implements Runnable {
 	/**
 	 * for debugging purposes only
 	 */
-	@SuppressWarnings("unused")
+	// @SuppressWarnings("unused")
 	private static final String TAG = ClientRunnable.class.getSimpleName();
 
 	private final Socket clientSocket;
