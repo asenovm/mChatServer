@@ -23,11 +23,8 @@ public class ChatServer {
 
 	private final Set<User> registeredUsers;
 
-	private final Object lock;
-
 	private ChatServer() {
 		registeredUsers = new HashSet<User>();
-		lock = new Object();
 	}
 
 	public static synchronized ChatServer getInstance() {
@@ -37,13 +34,9 @@ public class ChatServer {
 		return serverInstance;
 	}
 
-	public boolean registerUser(final String username) {
-		// we need synchornization when adding and getting a list of all the
-		// users
-		synchronized (lock) {
-			System.out.println("new user " + username);
-			return registeredUsers.add(new User(username));
-		}
+	public synchronized boolean registerUser(final String username) {
+		System.out.println("new user " + username);
+		return registeredUsers.add(new User(username));
 	}
 
 	public static void main(String[] args) {

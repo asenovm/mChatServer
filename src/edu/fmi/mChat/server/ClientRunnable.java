@@ -3,11 +3,11 @@ package edu.fmi.mChat.server;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.logging.Logger;
 
 import edu.fmi.mChat.server.model.MetaRequest;
-import edu.fmi.mChat.server.model.RegisterRequest;
 
 public class ClientRunnable implements Runnable {
 
@@ -28,18 +28,21 @@ public class ClientRunnable implements Runnable {
 		try {
 			final BufferedReader reader = new BufferedReader(
 					new InputStreamReader(clientSocket.getInputStream()));
+			final PrintWriter writer = new PrintWriter(clientSocket
+					.getOutputStream());
+
 			final String inputLine = reader.readLine();
 
 			final RequestParser parser = new RequestParser();
 			final MetaRequest metaRequest = parser.parse(inputLine);
 
-			switch (metaRequest.getRequestType()) {
-			case REGISTER:
-				final RegisterRequest registerRequest = (RegisterRequest) metaRequest;
-				ChatServer.getInstance().registerUser(
-						registerRequest.getUsername());
-				break;
-			}
+			final BaseServerResponse response = ResponseFactory
+					.createResponse(metaRequest);
+			System.out.println("writing in the client socket "
+					+ response.toString());
+			writer.write(response.toString());
+			writer.flush();
+			writer.close();
 
 		} catch (IOException ex) {
 			Logger.getAnonymousLogger().throwing(TAG, "run", ex);
