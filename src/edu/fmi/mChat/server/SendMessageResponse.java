@@ -30,6 +30,7 @@ public class SendMessageResponse extends BaseServerResponse {
 		final StringBuilder builder = new StringBuilder();
 		builder.append("300 msg_from ");
 		builder.append(sender);
+		builder.append(" ");
 		builder.append(message);
 		builder.append("\r\n");
 		return builder.toString();
