@@ -52,29 +52,41 @@ public class ChatServer {
 	}
 
 	public boolean sendMessage(final String receiver, SendMessageResponse response) {
-		User receiverUser = null;
-		for (final User user : registeredUsers.values()) {
-			if (user.getUsername().equals(receiver)) {
-				receiverUser = user;
-				break;
+		if (receiver.length() == 0) {
+			for (final User user : registeredUsers.values()) {
+				writeResponseToSocket(response, user);
 			}
-		}
-
-		if (receiverUser == null) {
-			return false;
 		} else {
-			try {
-				final Socket clientSocket = new Socket(receiverUser.getAddress(),
-						PORT_NUMBER_OUTCOMING);
-				final PrintWriter writer = new PrintWriter(clientSocket.getOutputStream());
-				writer.write(response.toString());
-				writer.flush();
-			} catch (IOException e) {
-				e.printStackTrace();
-				Logger.getAnonymousLogger().throwing(TAG, "sendMessage", e);
+			User receiverUser = findUser(receiver);
+			if (receiverUser == null) {
+				return false;
 			}
+
+			writeResponseToSocket(response, receiverUser);
 		}
 		return true;
+	}
+
+	private User findUser(final String username) {
+		for (final User user : registeredUsers.values()) {
+			if (user.getUsername().equals(username)) {
+				return user;
+			}
+		}
+		return null;
+	}
+
+	private void writeResponseToSocket(final SendMessageResponse response, final User receiverUser) {
+		try {
+			final Socket clientSocket = new Socket(receiverUser.getAddress(), PORT_NUMBER_OUTCOMING);
+			final PrintWriter writer = new PrintWriter(clientSocket.getOutputStream());
+			writer.write(response.toString());
+			writer.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
+			Logger.getAnonymousLogger().throwing(TAG, "sendMessage", e);
+		}
+
 	}
 
 	public static void main(String[] args) {
