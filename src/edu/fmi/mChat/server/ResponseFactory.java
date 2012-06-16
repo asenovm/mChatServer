@@ -16,7 +16,6 @@ public class ResponseFactory {
 
 	public static BaseServerResponse createResponse(final MetaRequest metaRequest,
 			final InetAddress requestSource) {
-		System.out.println("createResponse!!!");
 		switch (metaRequest.getRequestType()) {
 		case REGISTER:
 			return createRegisterResponse((RegisterRequest) metaRequest, requestSource);
@@ -29,10 +28,8 @@ public class ResponseFactory {
 
 	private static BaseServerResponse createRegisterResponse(final RegisterRequest registerRequest,
 			final InetAddress requestSource) {
-		System.out.println("trying to register " + registerRequest.getUsername());
 		final boolean isRegistered = !ChatServer.getInstance().registerUser(
 				registerRequest.getUsername(), requestSource);
-		System.out.println("registered = " + isRegistered);
 		return new RegisterResponse(isRegistered, registerRequest.getUsername());
 	}
 

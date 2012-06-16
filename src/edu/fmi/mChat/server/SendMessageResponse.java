@@ -43,6 +43,14 @@ public class SendMessageResponse extends BaseServerResponse {
 
 	@Override
 	protected void send(Writer clientWriter) throws IOException {
-		ChatServer.getInstance().sendMessage(receiver, this);
+		final boolean result = ChatServer.getInstance().sendMessage(receiver, this);
+		if (result) {
+			clientWriter.write("200 ok message to " + receiver + "sent successfully.");
+			clientWriter.flush();
+		} else {
+			clientWriter.write("100 err " + receiver + "does not exists!");
+			clientWriter.flush();
+		}
+
 	}
 }

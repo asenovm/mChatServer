@@ -51,7 +51,7 @@ public class ChatServer {
 		return true;
 	}
 
-	public void sendMessage(final String receiver, SendMessageResponse response) {
+	public boolean sendMessage(final String receiver, SendMessageResponse response) {
 		User receiverUser = null;
 		for (final User user : registeredUsers.values()) {
 			if (user.getUsername().equals(receiver)) {
@@ -59,11 +59,9 @@ public class ChatServer {
 				break;
 			}
 		}
-		System.out.println("receiver is " + receiver);
-		System.out.println("response is " + response.toString());
+
 		if (receiverUser == null) {
-			// the receiver is not registered within the server --> not handling
-			// this as for now
+			return false;
 		} else {
 			try {
 				final Socket clientSocket = new Socket(receiverUser.getAddress(),
@@ -76,6 +74,7 @@ public class ChatServer {
 				Logger.getAnonymousLogger().throwing(TAG, "sendMessage", e);
 			}
 		}
+		return true;
 	}
 
 	public static void main(String[] args) {
