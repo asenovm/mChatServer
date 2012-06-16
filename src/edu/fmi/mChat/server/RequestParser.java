@@ -2,6 +2,8 @@ package edu.fmi.mChat.server;
 
 import edu.fmi.mChat.server.model.MetaRequest;
 import edu.fmi.mChat.server.model.RegisterRequest;
+import edu.fmi.mChat.server.model.SendMessageRequest;
+import edu.fmi.mChat.server.model.User;
 
 public class RequestParser {
 
@@ -27,12 +29,14 @@ public class RequestParser {
 	 *         behind the request
 	 * 
 	 */
-	public MetaRequest parse(final String request) {
+	public MetaRequest parse(final User requestSender, final String request) {
+		System.out.println("in the server " + request);
 		final String[] parsedRequest = request.split(" ");
 		if (REQUEST_REGISTER.equals(parsedRequest[0])) {
 			return new RegisterRequest(parsedRequest[1]);
 		} else if (REQUEST_SEND_MESSAGE.equals(parsedRequest[0])) {
-			System.out.println("send message!!!!");
+			return new SendMessageRequest(requestSender.getUsername(), parsedRequest[1], request
+					.substring(request.indexOf(parsedRequest[1]) + parsedRequest[1].length() + 1));
 		}
 		// as for now
 		return null;

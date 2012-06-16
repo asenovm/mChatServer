@@ -1,5 +1,10 @@
 package edu.fmi.mChat.server;
 
+import java.io.IOException;
+import java.io.Writer;
+
+import edu.fmi.mChat.server.enums.RequestType;
+
 public abstract class BaseServerResponse {
 
 	/**
@@ -11,5 +16,9 @@ public abstract class BaseServerResponse {
 	protected int responseCode;
 
 	protected String responseMessage;
+
+	protected abstract RequestType getRequestType();
+
+	protected abstract void send(final Writer clientWriter) throws IOException;
 
 }

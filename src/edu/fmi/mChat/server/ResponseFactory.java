@@ -1,7 +1,10 @@
 package edu.fmi.mChat.server;
 
+import java.net.InetAddress;
+
 import edu.fmi.mChat.server.model.MetaRequest;
 import edu.fmi.mChat.server.model.RegisterRequest;
+import edu.fmi.mChat.server.model.SendMessageRequest;
 
 public class ResponseFactory {
 
@@ -11,17 +14,30 @@ public class ResponseFactory {
 	@SuppressWarnings("unused")
 	private static final String TAG = ResponseFactory.class.getSimpleName();
 
-	public static BaseServerResponse createResponse(final MetaRequest metaRequest) {
+	public static BaseServerResponse createResponse(final MetaRequest metaRequest,
+			final InetAddress requestSource) {
+		System.out.println("createResponse!!!");
 		switch (metaRequest.getRequestType()) {
 		case REGISTER:
-			final RegisterRequest registerRequest = (RegisterRequest) metaRequest;
-
-			final boolean isRegistered = !ChatServer.getInstance().registerUser(
-					registerRequest.getUsername());
-			return new RegisterResponse(isRegistered, registerRequest.getUsername());
+			return createRegisterResponse((RegisterRequest) metaRequest, requestSource);
+		case SEND_MESSAGE:
+			return createSendMessageResponse((SendMessageRequest) metaRequest);
 		default:
 			return null;
 		}
 	}
 
+	private static BaseServerResponse createRegisterResponse(final RegisterRequest registerRequest,
+			final InetAddress requestSource) {
+		System.out.println("trying to register " + registerRequest.getUsername());
+		final boolean isRegistered = !ChatServer.getInstance().registerUser(
+				registerRequest.getUsername(), requestSource);
+		System.out.println("registered = " + isRegistered);
+		return new RegisterResponse(isRegistered, registerRequest.getUsername());
+	}
+
+	private static BaseServerResponse createSendMessageResponse(final SendMessageRequest request) {
+		return new SendMessageResponse(request.getSender(), request.getReceiver(), request
+				.getMessage());
+	}
 }

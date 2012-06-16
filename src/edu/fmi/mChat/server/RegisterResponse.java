@@ -1,5 +1,9 @@
 package edu.fmi.mChat.server;
 
+import java.io.IOException;
+import java.io.Writer;
+
+import edu.fmi.mChat.server.enums.RequestType;
 import edu.fmi.mChat.server.utils.ResponseCode;
 
 public class RegisterResponse extends BaseServerResponse {
@@ -36,5 +40,16 @@ public class RegisterResponse extends BaseServerResponse {
 			stringBuilder.append(" already taken\r\n");
 		}
 		return stringBuilder.toString();
+	}
+
+	@Override
+	protected RequestType getRequestType() {
+		return RequestType.REGISTER;
+	}
+
+	@Override
+	protected void send(final Writer clientWriter) throws IOException {
+		clientWriter.write(toString());
+		clientWriter.flush();
 	}
 }

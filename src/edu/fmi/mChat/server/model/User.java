@@ -1,5 +1,7 @@
 package edu.fmi.mChat.server.model;
 
+import java.net.InetAddress;
+
 /**
  * 
  * Model class for users that are registered within the server
@@ -17,14 +19,17 @@ public class User {
 
 	private final String username;
 
+	private final InetAddress userAddress;
+
 	/**
 	 * Creates a new User with the username given
 	 * 
 	 * @param username
 	 *            the username that is behind this user
 	 */
-	public User(final String username) {
+	public User(final String username, final InetAddress address) {
 		this.username = username;
+		this.userAddress = address;
 	}
 
 	/**
@@ -36,12 +41,15 @@ public class User {
 		return username;
 	}
 
+	public InetAddress getAddress() {
+		return userAddress;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result
-				+ ((username == null) ? 0 : username.hashCode());
+		result = prime * result + ((username == null) ? 0 : username.hashCode());
 		return result;
 	}
 

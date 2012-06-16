@@ -8,6 +8,7 @@ import java.net.Socket;
 import java.util.logging.Logger;
 
 import edu.fmi.mChat.server.model.MetaRequest;
+import edu.fmi.mChat.server.model.User;
 
 public class ClientRunnable implements Runnable {
 
@@ -19,8 +20,11 @@ public class ClientRunnable implements Runnable {
 
 	private final Socket clientSocket;
 
-	public ClientRunnable(final Socket clientSocket) {
+	private final User client;
+
+	public ClientRunnable(final Socket clientSocket, final User client) {
 		this.clientSocket = clientSocket;
+		this.client = client;
 	}
 
 	@Override
@@ -32,12 +36,12 @@ public class ClientRunnable implements Runnable {
 			writer = new PrintWriter(clientSocket.getOutputStream());
 
 			final RequestParser parser = new RequestParser();
-			final MetaRequest metaRequest = parser.parse(reader.readLine());
+			final MetaRequest metaRequest = parser.parse(client, reader.readLine());
 
-			final BaseServerResponse response = ResponseFactory.createResponse(metaRequest);
+			final BaseServerResponse response = ResponseFactory.createResponse(metaRequest,
+					clientSocket.getInetAddress());
 
-			writer.write(response.toString());
-			writer.flush();
+			response.send(writer);
 
 		} catch (IOException ex) {
 			Logger.getAnonymousLogger().throwing(TAG, "run", ex);
