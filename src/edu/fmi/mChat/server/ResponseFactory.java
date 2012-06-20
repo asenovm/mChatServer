@@ -2,6 +2,7 @@ package edu.fmi.mChat.server;
 
 import java.net.InetAddress;
 
+import edu.fmi.mChat.server.model.CloseConnectionRequest;
 import edu.fmi.mChat.server.model.MetaRequest;
 import edu.fmi.mChat.server.model.RegisterRequest;
 import edu.fmi.mChat.server.model.SendMessageRequest;
@@ -21,6 +22,8 @@ public class ResponseFactory {
 			return createRegisterResponse((RegisterRequest) metaRequest, requestSource, server);
 		case SEND_MESSAGE:
 			return createSendMessageResponse((SendMessageRequest) metaRequest);
+		case CLOSE_CONNECTION:
+			return createByeResponse((CloseConnectionRequest) metaRequest, server);
 		default:
 			return null;
 		}
@@ -36,5 +39,11 @@ public class ResponseFactory {
 	private static BaseServerResponse createSendMessageResponse(final SendMessageRequest request) {
 		return new SendMessageResponse(request.getSender(), request.getReceiver(), request
 				.getMessage());
+	}
+
+	private static BaseServerResponse createByeResponse(final CloseConnectionRequest request,
+			final ChatServer server) {
+		final boolean result = server.closeConnection(request.getRequestSender());
+		return new CloseConnectionResponse(result);
 	}
 }

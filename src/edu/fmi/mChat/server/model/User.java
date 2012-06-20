@@ -1,6 +1,6 @@
 package edu.fmi.mChat.server.model;
 
-import java.net.InetAddress;
+import edu.fmi.mChat.server.utils.RemoteAddress;
 
 /**
  * 
@@ -19,9 +19,7 @@ public class User {
 
 	private final String username;
 
-	private final InetAddress userAddress;
-
-	private final int listeningPortNumber;
+	private final RemoteAddress remoteAddress;
 
 	/**
 	 * Creates a new User with the username given
@@ -29,10 +27,9 @@ public class User {
 	 * @param username
 	 *            the username that is behind this user
 	 */
-	public User(final String username, final InetAddress address, final int listeningPortNumber) {
+	public User(final String username, final RemoteAddress remoteAddress) {
 		this.username = username;
-		this.userAddress = address;
-		this.listeningPortNumber = listeningPortNumber;
+		this.remoteAddress = remoteAddress;
 	}
 
 	/**
@@ -44,12 +41,8 @@ public class User {
 		return username;
 	}
 
-	public InetAddress getAddress() {
-		return userAddress;
-	}
-
-	public int getListeningPortNumber() {
-		return listeningPortNumber;
+	public RemoteAddress getRemoteAddress() {
+		return remoteAddress;
 	}
 
 	@Override

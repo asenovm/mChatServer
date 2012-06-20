@@ -15,11 +15,11 @@ public class ResponseCode {
 	/**
 	 * {@value}
 	 */
-	public static final int REGISTER_OK = 200;
+	public static final int OPERATION_SUCCESSFUL = 200;
 
 	/**
 	 * {@value}
 	 */
-	public static final int REGISTER_FAIL = 100;
+	public static final int OPERATION_UNSUCCESSFUL = 100;
 
 }

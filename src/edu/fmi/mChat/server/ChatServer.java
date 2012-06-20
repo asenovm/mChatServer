@@ -39,7 +39,7 @@ public class ChatServer {
 		}
 
 		final RemoteAddress remoteAddress = new RemoteAddress(userAddress, portNumber);
-		registeredUsers.put(remoteAddress, new User(username, userAddress, portNumber));
+		registeredUsers.put(remoteAddress, new User(username, remoteAddress));
 		return true;
 	}
 
@@ -72,8 +72,9 @@ public class ChatServer {
 
 	private void writeResponseToSocket(final SendMessageResponse response, final User receiverUser) {
 		try {
-			final Socket clientSocket = new Socket(receiverUser.getAddress(), receiverUser
-					.getListeningPortNumber());
+			final RemoteAddress remoteAddress = receiverUser.getRemoteAddress();
+			final Socket clientSocket = new Socket(remoteAddress.getInetAddress(), remoteAddress
+					.getPortNumber());
 			final PrintWriter writer = new PrintWriter(clientSocket.getOutputStream());
 			System.out.println("reposnse is " + response.toString());
 			writer.write(response.toString());
@@ -102,5 +103,9 @@ public class ChatServer {
 
 	public User getUser(final RemoteAddress address) {
 		return registeredUsers.get(address);
+	}
+
+	public synchronized boolean closeConnection(final User user) {
+		return registeredUsers.remove(user.getRemoteAddress()) != null;
 	}
 }

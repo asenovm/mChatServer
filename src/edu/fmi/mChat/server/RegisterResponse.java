@@ -18,9 +18,9 @@ public class RegisterResponse extends BaseServerResponse {
 
 	public RegisterResponse(final boolean isRegistered, final String username) {
 		if (isRegistered) {
-			responseCode = ResponseCode.REGISTER_FAIL;
+			responseCode = ResponseCode.OPERATION_UNSUCCESSFUL;
 		} else {
-			responseCode = ResponseCode.REGISTER_OK;
+			responseCode = ResponseCode.OPERATION_SUCCESSFUL;
 		}
 		this.username = username;
 	}
@@ -28,12 +28,12 @@ public class RegisterResponse extends BaseServerResponse {
 	@Override
 	public String toString() {
 		final StringBuilder stringBuilder = new StringBuilder();
-		if (responseCode == ResponseCode.REGISTER_OK) {
+		if (responseCode == ResponseCode.OPERATION_SUCCESSFUL) {
 			stringBuilder.append(responseCode);
 			stringBuilder.append(" ok ");
 			stringBuilder.append(username);
 			stringBuilder.append(" successfully registered\r\n");
-		} else if (responseCode == ResponseCode.REGISTER_FAIL) {
+		} else if (responseCode == ResponseCode.OPERATION_UNSUCCESSFUL) {
 			stringBuilder.append(responseCode);
 			stringBuilder.append(" err ");
 			stringBuilder.append(username);
