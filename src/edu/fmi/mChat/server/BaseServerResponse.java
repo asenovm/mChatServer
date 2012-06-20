@@ -19,6 +19,7 @@ public abstract class BaseServerResponse {
 
 	protected abstract RequestType getRequestType();
 
-	protected abstract void send(final Writer clientWriter) throws IOException;
+	protected abstract void send(final ChatServer server, final Writer clientWriter)
+			throws IOException;
 
 }

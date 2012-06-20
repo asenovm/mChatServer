@@ -15,10 +15,10 @@ public class ResponseFactory {
 	private static final String TAG = ResponseFactory.class.getSimpleName();
 
 	public static BaseServerResponse createResponse(final MetaRequest metaRequest,
-			final InetAddress requestSource) {
+			final InetAddress requestSource, final ChatServer server) {
 		switch (metaRequest.getRequestType()) {
 		case REGISTER:
-			return createRegisterResponse((RegisterRequest) metaRequest, requestSource);
+			return createRegisterResponse((RegisterRequest) metaRequest, requestSource, server);
 		case SEND_MESSAGE:
 			return createSendMessageResponse((SendMessageRequest) metaRequest);
 		default:
@@ -27,9 +27,9 @@ public class ResponseFactory {
 	}
 
 	private static BaseServerResponse createRegisterResponse(final RegisterRequest registerRequest,
-			final InetAddress requestSource) {
-		final boolean isRegistered = !ChatServer.getInstance().registerUser(
-				registerRequest.getUsername(), requestSource, registerRequest.getPortNumber());
+			final InetAddress requestSource, final ChatServer server) {
+		final boolean isRegistered = !server.registerUser(registerRequest.getUsername(),
+				requestSource, registerRequest.getPortNumber());
 		return new RegisterResponse(isRegistered, registerRequest.getUsername());
 	}
 

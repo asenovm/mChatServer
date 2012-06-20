@@ -21,8 +21,11 @@ public class ClientRunnable implements Runnable {
 
 	private final Socket clientSocket;
 
-	public ClientRunnable(final Socket clientSocket) {
+	private final ChatServer server;
+
+	public ClientRunnable(final Socket clientSocket, final ChatServer server) {
 		this.clientSocket = clientSocket;
+		this.server = server;
 	}
 
 	@Override
@@ -42,14 +45,14 @@ public class ClientRunnable implements Runnable {
 			final RemoteAddress address = new RemoteAddress(clientSocket.getInetAddress(),
 					portNumber);
 
-			final User requestSender = ChatServer.getInstance().getUser(address);
+			final User requestSender = server.getUser(address);
 
 			final MetaRequest metaRequest = parser.parse(requestSender, request);
 
 			final BaseServerResponse response = ResponseFactory.createResponse(metaRequest,
-					clientSocket.getInetAddress());
+					clientSocket.getInetAddress(), server);
 
-			response.send(writer);
+			response.send(server, writer);
 
 		} catch (IOException ex) {
 			Logger.getAnonymousLogger().throwing(TAG, "run", ex);

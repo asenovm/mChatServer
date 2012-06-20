@@ -24,19 +24,10 @@ public class ChatServer {
 
 	private static final int PORT_NUMBER_INCOMING = 65535;
 
-	private static ChatServer serverInstance;
-
 	private final Map<RemoteAddress, User> registeredUsers;
 
-	private ChatServer() {
+	/* package */ChatServer() {
 		registeredUsers = new HashMap<RemoteAddress, User>();
-	}
-
-	public static synchronized ChatServer getInstance() {
-		if (serverInstance == null) {
-			serverInstance = new ChatServer();
-		}
-		return serverInstance;
 	}
 
 	public synchronized boolean registerUser(final String username, final InetAddress userAddress,
@@ -95,12 +86,13 @@ public class ChatServer {
 	}
 
 	public static void main(String[] args) {
+		final ChatServer server = new ChatServer();
 		try {
 			final ServerSocket serverSocket = new ServerSocket(PORT_NUMBER_INCOMING);
 			final ExecutorService executor = Executors.newCachedThreadPool();
 			while (true) {
 				final Socket clientSocket = serverSocket.accept();
-				final Runnable clientRunnable = new ClientRunnable(clientSocket);
+				final Runnable clientRunnable = new ClientRunnable(clientSocket, server);
 				executor.execute(clientRunnable);
 			}
 		} catch (IOException ex) {

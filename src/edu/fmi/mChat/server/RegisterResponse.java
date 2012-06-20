@@ -48,7 +48,7 @@ public class RegisterResponse extends BaseServerResponse {
 	}
 
 	@Override
-	protected void send(final Writer clientWriter) throws IOException {
+	protected void send(final ChatServer server, final Writer clientWriter) throws IOException {
 		clientWriter.write(toString());
 		clientWriter.flush();
 	}
