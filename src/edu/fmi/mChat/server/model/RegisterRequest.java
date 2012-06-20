@@ -19,14 +19,17 @@ public class RegisterRequest implements MetaRequest {
 
 	private final String username;
 
+	private final int portNumber;
+
 	/**
 	 * Creates new MetaRequest
 	 * 
 	 * @param username
 	 *            the username that is to be registered within the server
 	 */
-	public RegisterRequest(final String username) {
+	public RegisterRequest(final String username, final int portNumber) {
 		this.username = username;
+		this.portNumber = portNumber;
 	}
 
 	/**
@@ -46,6 +49,10 @@ public class RegisterRequest implements MetaRequest {
 	@Override
 	public RequestType getRequestType() {
 		return RequestType.REGISTER;
+	}
+
+	public int getPortNumber() {
+		return portNumber;
 	}
 
 }

@@ -21,15 +21,18 @@ public class User {
 
 	private final InetAddress userAddress;
 
+	private final int listeningPortNumber;
+
 	/**
 	 * Creates a new User with the username given
 	 * 
 	 * @param username
 	 *            the username that is behind this user
 	 */
-	public User(final String username, final InetAddress address) {
+	public User(final String username, final InetAddress address, final int listeningPortNumber) {
 		this.username = username;
 		this.userAddress = address;
+		this.listeningPortNumber = listeningPortNumber;
 	}
 
 	/**
@@ -43,6 +46,10 @@ public class User {
 
 	public InetAddress getAddress() {
 		return userAddress;
+	}
+
+	public int getListeningPortNumber() {
+		return listeningPortNumber;
 	}
 
 	@Override

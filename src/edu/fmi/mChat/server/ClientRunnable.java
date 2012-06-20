@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 
 import edu.fmi.mChat.server.model.MetaRequest;
 import edu.fmi.mChat.server.model.User;
+import edu.fmi.mChat.server.utils.RemoteAddress;
 
 public class ClientRunnable implements Runnable {
 
@@ -20,11 +21,8 @@ public class ClientRunnable implements Runnable {
 
 	private final Socket clientSocket;
 
-	private final User client;
-
-	public ClientRunnable(final Socket clientSocket, final User client) {
+	public ClientRunnable(final Socket clientSocket) {
 		this.clientSocket = clientSocket;
-		this.client = client;
 	}
 
 	@Override
@@ -36,7 +34,17 @@ public class ClientRunnable implements Runnable {
 			writer = new PrintWriter(clientSocket.getOutputStream());
 
 			final RequestParser parser = new RequestParser();
-			final MetaRequest metaRequest = parser.parse(client, reader.readLine());
+
+			final String request = reader.readLine();
+			final int portNumber = Integer.parseInt(request.substring(request.lastIndexOf(" ") + 1,
+					request.length()));
+
+			final RemoteAddress address = new RemoteAddress(clientSocket.getInetAddress(),
+					portNumber);
+
+			final User requestSender = ChatServer.getInstance().getUser(address);
+
+			final MetaRequest metaRequest = parser.parse(requestSender, request);
 
 			final BaseServerResponse response = ResponseFactory.createResponse(metaRequest,
 					clientSocket.getInetAddress());

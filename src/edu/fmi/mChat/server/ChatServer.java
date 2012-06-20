@@ -12,6 +12,7 @@ import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 
 import edu.fmi.mChat.server.model.User;
+import edu.fmi.mChat.server.utils.RemoteAddress;
 
 public class ChatServer {
 
@@ -23,14 +24,12 @@ public class ChatServer {
 
 	private static final int PORT_NUMBER_INCOMING = 65535;
 
-	private static final int PORT_NUMBER_OUTCOMING = 65534;
-
 	private static ChatServer serverInstance;
 
-	private final Map<InetAddress, User> registeredUsers;
+	private final Map<RemoteAddress, User> registeredUsers;
 
 	private ChatServer() {
-		registeredUsers = new HashMap<InetAddress, User>();
+		registeredUsers = new HashMap<RemoteAddress, User>();
 	}
 
 	public static synchronized ChatServer getInstance() {
@@ -40,18 +39,21 @@ public class ChatServer {
 		return serverInstance;
 	}
 
-	public synchronized boolean registerUser(final String username, final InetAddress userAddress) {
+	public synchronized boolean registerUser(final String username, final InetAddress userAddress,
+			final int portNumber) {
 		for (final User user : registeredUsers.values()) {
 			if (user.getUsername().equals(username)) {
 				return false;
 			}
 		}
 
-		registeredUsers.put(userAddress, new User(username, userAddress));
+		final RemoteAddress remoteAddress = new RemoteAddress(userAddress, portNumber);
+		registeredUsers.put(remoteAddress, new User(username, userAddress, portNumber));
 		return true;
 	}
 
 	public boolean sendMessage(final String receiver, SendMessageResponse response) {
+		System.out.println("receiver is " + receiver);
 		if (receiver.length() == 0) {
 			for (final User user : registeredUsers.values()) {
 				writeResponseToSocket(response, user);
@@ -69,6 +71,7 @@ public class ChatServer {
 
 	private User findUser(final String username) {
 		for (final User user : registeredUsers.values()) {
+			System.out.println("current username is  " + user.getUsername() + " vs " + username);
 			if (user.getUsername().equals(username)) {
 				return user;
 			}
@@ -78,8 +81,10 @@ public class ChatServer {
 
 	private void writeResponseToSocket(final SendMessageResponse response, final User receiverUser) {
 		try {
-			final Socket clientSocket = new Socket(receiverUser.getAddress(), PORT_NUMBER_OUTCOMING);
+			final Socket clientSocket = new Socket(receiverUser.getAddress(), receiverUser
+					.getListeningPortNumber());
 			final PrintWriter writer = new PrintWriter(clientSocket.getOutputStream());
+			System.out.println("reposnse is " + response.toString());
 			writer.write(response.toString());
 			writer.flush();
 		} catch (IOException e) {
@@ -95,12 +100,15 @@ public class ChatServer {
 			final ExecutorService executor = Executors.newCachedThreadPool();
 			while (true) {
 				final Socket clientSocket = serverSocket.accept();
-				final Runnable clientRunnable = new ClientRunnable(clientSocket, ChatServer
-						.getInstance().registeredUsers.get(clientSocket.getInetAddress()));
+				final Runnable clientRunnable = new ClientRunnable(clientSocket);
 				executor.execute(clientRunnable);
 			}
 		} catch (IOException ex) {
 			Logger.getAnonymousLogger().throwing(TAG, "main", ex);
 		}
+	}
+
+	public User getUser(final RemoteAddress address) {
+		return registeredUsers.get(address);
 	}
 }

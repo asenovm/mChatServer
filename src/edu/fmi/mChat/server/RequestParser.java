@@ -33,10 +33,14 @@ public class RequestParser {
 		System.out.println("in the server " + request);
 		final String[] parsedRequest = request.split(" ");
 		if (REQUEST_REGISTER.equals(parsedRequest[0])) {
-			return new RegisterRequest(parsedRequest[1]);
+			return new RegisterRequest(parsedRequest[1], Integer.parseInt(parsedRequest[3]));
 		} else if (REQUEST_SEND_MESSAGE.equals(parsedRequest[0])) {
+			System.out.println("message is "
+					+ request.substring(request.indexOf(parsedRequest[1])
+							+ parsedRequest[1].length() + 1, request.lastIndexOf("port")));
 			return new SendMessageRequest(requestSender.getUsername(), parsedRequest[1], request
-					.substring(request.indexOf(parsedRequest[1]) + parsedRequest[1].length() + 1));
+					.substring(request.indexOf(parsedRequest[1]) + parsedRequest[1].length() + 1,
+							request.lastIndexOf("port")));
 		}
 		// as for now
 		return null;

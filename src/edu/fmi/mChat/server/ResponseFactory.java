@@ -29,7 +29,7 @@ public class ResponseFactory {
 	private static BaseServerResponse createRegisterResponse(final RegisterRequest registerRequest,
 			final InetAddress requestSource) {
 		final boolean isRegistered = !ChatServer.getInstance().registerUser(
-				registerRequest.getUsername(), requestSource);
+				registerRequest.getUsername(), requestSource, registerRequest.getPortNumber());
 		return new RegisterResponse(isRegistered, registerRequest.getUsername());
 	}
 
