@@ -1,8 +1,9 @@
-package edu.fmi.mChat.server;
+package edu.fmi.mChat.server.response;
 
 import java.io.IOException;
 import java.io.Writer;
 
+import edu.fmi.mChat.server.ChatServer;
 import edu.fmi.mChat.server.enums.RequestType;
 
 public abstract class BaseServerResponse {
@@ -19,7 +20,7 @@ public abstract class BaseServerResponse {
 
 	protected abstract RequestType getRequestType();
 
-	protected abstract void send(final ChatServer server, final Writer clientWriter)
+	public abstract void send(final ChatServer server, final Writer clientWriter)
 			throws IOException;
 
 }

@@ -1,4 +1,4 @@
-package edu.fmi.mChat.server.model;
+package edu.fmi.mChat.server.request;
 
 import edu.fmi.mChat.server.enums.RequestType;
 

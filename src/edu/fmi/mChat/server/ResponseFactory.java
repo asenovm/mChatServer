@@ -2,10 +2,14 @@ package edu.fmi.mChat.server;
 
 import java.net.InetAddress;
 
-import edu.fmi.mChat.server.model.CloseConnectionRequest;
-import edu.fmi.mChat.server.model.MetaRequest;
-import edu.fmi.mChat.server.model.RegisterRequest;
-import edu.fmi.mChat.server.model.SendMessageRequest;
+import edu.fmi.mChat.server.request.CloseConnectionRequest;
+import edu.fmi.mChat.server.request.MetaRequest;
+import edu.fmi.mChat.server.request.RegisterRequest;
+import edu.fmi.mChat.server.request.SendMessageRequest;
+import edu.fmi.mChat.server.response.BaseServerResponse;
+import edu.fmi.mChat.server.response.CloseConnectionResponse;
+import edu.fmi.mChat.server.response.RegisterResponse;
+import edu.fmi.mChat.server.response.SendMessageResponse;
 
 public class ResponseFactory {
 

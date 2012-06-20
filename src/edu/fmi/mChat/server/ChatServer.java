@@ -12,6 +12,7 @@ import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 
 import edu.fmi.mChat.server.model.User;
+import edu.fmi.mChat.server.response.SendMessageResponse;
 import edu.fmi.mChat.server.utils.RemoteAddress;
 
 public class ChatServer {

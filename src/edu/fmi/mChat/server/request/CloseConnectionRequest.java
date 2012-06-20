@@ -1,6 +1,7 @@
-package edu.fmi.mChat.server.model;
+package edu.fmi.mChat.server.request;
 
 import edu.fmi.mChat.server.enums.RequestType;
+import edu.fmi.mChat.server.model.User;
 
 public class CloseConnectionRequest implements MetaRequest {
 

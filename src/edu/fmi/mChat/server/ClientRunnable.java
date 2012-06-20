@@ -7,8 +7,9 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.logging.Logger;
 
-import edu.fmi.mChat.server.model.MetaRequest;
 import edu.fmi.mChat.server.model.User;
+import edu.fmi.mChat.server.request.MetaRequest;
+import edu.fmi.mChat.server.response.BaseServerResponse;
 import edu.fmi.mChat.server.utils.RemoteAddress;
 
 public class ClientRunnable implements Runnable {

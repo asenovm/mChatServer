@@ -1,8 +1,9 @@
-package edu.fmi.mChat.server;
+package edu.fmi.mChat.server.response;
 
 import java.io.IOException;
 import java.io.Writer;
 
+import edu.fmi.mChat.server.ChatServer;
 import edu.fmi.mChat.server.enums.RequestType;
 import edu.fmi.mChat.server.utils.ResponseCode;
 
@@ -41,7 +42,7 @@ public class CloseConnectionResponse extends BaseServerResponse {
 	}
 
 	@Override
-	protected void send(ChatServer server, Writer clientWriter) throws IOException {
+	public void send(ChatServer server, Writer clientWriter) throws IOException {
 		clientWriter.write(toString());
 		clientWriter.flush();
 	}

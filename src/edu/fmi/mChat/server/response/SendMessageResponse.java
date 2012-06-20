@@ -1,8 +1,9 @@
-package edu.fmi.mChat.server;
+package edu.fmi.mChat.server.response;
 
 import java.io.IOException;
 import java.io.Writer;
 
+import edu.fmi.mChat.server.ChatServer;
 import edu.fmi.mChat.server.enums.RequestType;
 
 public class SendMessageResponse extends BaseServerResponse {
@@ -42,7 +43,7 @@ public class SendMessageResponse extends BaseServerResponse {
 	}
 
 	@Override
-	protected void send(final ChatServer server, Writer clientWriter) throws IOException {
+	public void send(final ChatServer server, Writer clientWriter) throws IOException {
 		final boolean result = server.sendMessage(receiver, this);
 		if (result) {
 			clientWriter.write("200 ok message to " + receiver + "sent successfully.");

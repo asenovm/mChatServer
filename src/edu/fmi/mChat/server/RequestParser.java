@@ -1,10 +1,10 @@
 package edu.fmi.mChat.server;
 
-import edu.fmi.mChat.server.model.CloseConnectionRequest;
-import edu.fmi.mChat.server.model.MetaRequest;
-import edu.fmi.mChat.server.model.RegisterRequest;
-import edu.fmi.mChat.server.model.SendMessageRequest;
 import edu.fmi.mChat.server.model.User;
+import edu.fmi.mChat.server.request.CloseConnectionRequest;
+import edu.fmi.mChat.server.request.MetaRequest;
+import edu.fmi.mChat.server.request.RegisterRequest;
+import edu.fmi.mChat.server.request.SendMessageRequest;
 
 public class RequestParser {
 
