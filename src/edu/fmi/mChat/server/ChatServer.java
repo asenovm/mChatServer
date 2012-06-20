@@ -5,6 +5,8 @@ import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -108,5 +110,9 @@ public class ChatServer {
 
 	public synchronized boolean closeConnection(final User user) {
 		return registeredUsers.remove(user.getRemoteAddress()) != null;
+	}
+
+	public synchronized Collection<User> getActiveUsers() {
+		return Collections.unmodifiableCollection(registeredUsers.values());
 	}
 }

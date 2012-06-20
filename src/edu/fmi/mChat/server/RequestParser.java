@@ -2,6 +2,7 @@ package edu.fmi.mChat.server;
 
 import edu.fmi.mChat.server.model.User;
 import edu.fmi.mChat.server.request.CloseConnectionRequest;
+import edu.fmi.mChat.server.request.ListActiveUsersRequest;
 import edu.fmi.mChat.server.request.MetaRequest;
 import edu.fmi.mChat.server.request.RegisterRequest;
 import edu.fmi.mChat.server.request.SendMessageRequest;
@@ -22,6 +23,8 @@ public class RequestParser {
 	private static final String REQUEST_SEND_MESSAGE = "send_to";
 
 	private static final String REQUEST_BYE = "bye";
+
+	private static final String REQUEST_LIST = "list";
 
 	/**
 	 * Returns a meta request associated with the request String specified.
@@ -45,6 +48,8 @@ public class RequestParser {
 							request.lastIndexOf("port")));
 		} else if (REQUEST_BYE.equals(parsedRequest[0])) {
 			return new CloseConnectionRequest(requestSender);
+		} else if (REQUEST_LIST.equals(parsedRequest[0])) {
+			return new ListActiveUsersRequest();
 		}
 		return null;
 	}
