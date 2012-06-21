@@ -8,11 +8,13 @@ import edu.fmi.mChat.server.request.CloseConnectionRequest;
 import edu.fmi.mChat.server.request.ListActiveUsersRequest;
 import edu.fmi.mChat.server.request.MetaRequest;
 import edu.fmi.mChat.server.request.RegisterRequest;
+import edu.fmi.mChat.server.request.SendFileRequest;
 import edu.fmi.mChat.server.request.SendMessageRequest;
 import edu.fmi.mChat.server.response.BaseServerResponse;
 import edu.fmi.mChat.server.response.CloseConnectionResponse;
 import edu.fmi.mChat.server.response.ListActiveUsersResponse;
 import edu.fmi.mChat.server.response.RegisterResponse;
+import edu.fmi.mChat.server.response.SendFileMessageResponse;
 import edu.fmi.mChat.server.response.SendMessageResponse;
 
 public class ResponseFactory {
@@ -34,6 +36,8 @@ public class ResponseFactory {
 			return createByeResponse((CloseConnectionRequest) metaRequest, server);
 		case LIST_ACTIVE_USERS:
 			return createListUsersResponse((ListActiveUsersRequest) metaRequest, server);
+		case SEND_FILE:
+			return createSendFileMessage((SendFileRequest) metaRequest, server);
 		default:
 			return null;
 		}
@@ -61,5 +65,11 @@ public class ResponseFactory {
 			final ChatServer server) {
 		final Collection<User> activeUsers = server.getActiveUsers();
 		return new ListActiveUsersResponse(activeUsers);
+	}
+
+	private static BaseServerResponse createSendFileMessage(final SendFileRequest request,
+			final ChatServer server) {
+		final User receiver = server.getUser(request.getReceiver());
+		return new SendFileMessageResponse(receiver, request.getFilePath());
 	}
 }

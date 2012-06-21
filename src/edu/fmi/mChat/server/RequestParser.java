@@ -5,6 +5,7 @@ import edu.fmi.mChat.server.request.CloseConnectionRequest;
 import edu.fmi.mChat.server.request.ListActiveUsersRequest;
 import edu.fmi.mChat.server.request.MetaRequest;
 import edu.fmi.mChat.server.request.RegisterRequest;
+import edu.fmi.mChat.server.request.SendFileRequest;
 import edu.fmi.mChat.server.request.SendMessageRequest;
 
 public class RequestParser {
@@ -25,6 +26,8 @@ public class RequestParser {
 	private static final String REQUEST_BYE = "bye";
 
 	private static final String REQUEST_LIST = "list";
+
+	private static final String REQUEST_SEND_FILE = "send_file_to";
 
 	/**
 	 * Returns a meta request associated with the request String specified.
@@ -50,7 +53,15 @@ public class RequestParser {
 			return new CloseConnectionRequest(requestSender);
 		} else if (REQUEST_LIST.equals(parsedRequest[0])) {
 			return new ListActiveUsersRequest();
+		} else if (REQUEST_SEND_FILE.equals(parsedRequest[0])) {
+			System.out.println("file path is "
+					+ request.substring(request.indexOf(parsedRequest[1])
+							+ parsedRequest[1].length() + 1, request.indexOf("port") - 1));
+			return new SendFileRequest(parsedRequest[1], request.substring(request
+					.indexOf(parsedRequest[1])
+					+ parsedRequest[1].length() + 1, request.indexOf("port") - 1), portNumber);
 		}
+
 		return null;
 	}
 }

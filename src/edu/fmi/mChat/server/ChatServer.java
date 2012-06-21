@@ -115,4 +115,13 @@ public class ChatServer {
 	public synchronized Collection<User> getActiveUsers() {
 		return Collections.unmodifiableCollection(registeredUsers.values());
 	}
+
+	public synchronized User getUser(final String username) {
+		for (final User user : registeredUsers.values()) {
+			if (user.getUsername().equals(username)) {
+				return user;
+			}
+		}
+		return null;
+	}
 }
