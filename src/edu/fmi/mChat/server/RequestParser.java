@@ -39,7 +39,6 @@ public class RequestParser {
 	 * 
 	 */
 	public MetaRequest parse(final User requestSender, final String request) {
-		System.out.println("in the server " + request);
 		final int portNumber = Integer.parseInt(request.substring(request.lastIndexOf("port")
 				+ "port".length() + 1));
 		final String[] parsedRequest = request.split(" ");

@@ -11,7 +11,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.logging.Logger;
+
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
 
 import edu.fmi.mChat.server.model.User;
 import edu.fmi.mChat.server.response.SendMessageResponse;
@@ -22,12 +24,20 @@ public class ChatServer {
 	/**
 	 * for debugging purposes only
 	 */
-	// @SuppressWarnings("unused")
+	@SuppressWarnings("unused")
 	private static final String TAG = ChatServer.class.getSimpleName();
 
 	private static final int PORT_NUMBER_INCOMING = 65535;
 
 	private final Map<RemoteAddress, User> registeredUsers;
+
+	private static final Logger logger;
+
+	static {
+		PropertyConfigurator.configure("log4j.properties");
+		logger = org.apache.log4j.Logger.getLogger(ChatServer.class);
+
+	}
 
 	/* package */ChatServer() {
 		registeredUsers = new HashMap<RemoteAddress, User>();
@@ -47,7 +57,6 @@ public class ChatServer {
 	}
 
 	public boolean sendMessage(final String receiver, SendMessageResponse response) {
-		System.out.println("receiver is " + receiver);
 		if (receiver.length() == 0) {
 			for (final User user : registeredUsers.values()) {
 				writeResponseToSocket(response, user);
@@ -65,7 +74,6 @@ public class ChatServer {
 
 	private User findUser(final String username) {
 		for (final User user : registeredUsers.values()) {
-			System.out.println("current username is  " + user.getUsername() + " vs " + username);
 			if (user.getUsername().equals(username)) {
 				return user;
 			}
@@ -79,12 +87,10 @@ public class ChatServer {
 			final Socket clientSocket = new Socket(remoteAddress.getInetAddress(), remoteAddress
 					.getPortNumber());
 			final PrintWriter writer = new PrintWriter(clientSocket.getOutputStream());
-			System.out.println("reposnse is " + response.toString());
 			writer.write(response.toString());
 			writer.flush();
 		} catch (IOException e) {
-			e.printStackTrace();
-			Logger.getAnonymousLogger().throwing(TAG, "sendMessage", e);
+			logger.fatal("send message " + e);
 		}
 
 	}
@@ -100,7 +106,7 @@ public class ChatServer {
 				executor.execute(clientRunnable);
 			}
 		} catch (IOException ex) {
-			Logger.getAnonymousLogger().throwing(TAG, "main", ex);
+			logger.fatal("cant open socket", ex);
 		}
 	}
 

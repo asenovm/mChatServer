@@ -5,7 +5,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.logging.Logger;
+
+import org.apache.log4j.Logger;
 
 import edu.fmi.mChat.server.model.User;
 import edu.fmi.mChat.server.request.MetaRequest;
@@ -17,16 +18,19 @@ public class ClientRunnable implements Runnable {
 	/**
 	 * for debugging purposes only
 	 */
-	// @SuppressWarnings("unused")
+	@SuppressWarnings("unused")
 	private static final String TAG = ClientRunnable.class.getSimpleName();
 
 	private final Socket clientSocket;
 
 	private final ChatServer server;
 
+	private final Logger logger;
+
 	public ClientRunnable(final Socket clientSocket, final ChatServer server) {
 		this.clientSocket = clientSocket;
 		this.server = server;
+		logger = Logger.getLogger(ClientRunnable.class);
 	}
 
 	@Override
@@ -56,13 +60,13 @@ public class ClientRunnable implements Runnable {
 			response.send(server, writer);
 
 		} catch (IOException ex) {
-			Logger.getAnonymousLogger().throwing(TAG, "run", ex);
+			logger.fatal("client runnable", ex);
 		} finally {
 			writer.close();
 			try {
 				reader.close();
-			} catch (IOException e) {
-				Logger.getAnonymousLogger().throwing(TAG, "run", e);
+			} catch (IOException ex) {
+				logger.fatal("clien runnable", ex);
 			}
 		}
 	}
