@@ -16,8 +16,8 @@ The server has the following functionality:
 <ul>
   <li><strong>user <em>username</em> <em>port_number</em></strong> - registers the specified username within the server. No clients with the same username can be registered. Server responses will be written to the specified in the request port</li><br />
   <li><strong>send_to <em>username</em> <em>message</em> <em>port</em></strong> - sends the specified message to the server. Server/client responses will be written to the specified port</li><br />
-  <li><strong>send_al <em>message</em> <em>port_number</em></strong> - broadcasts the message to all the registered clients. Server/client responses will be written to the specified port on the client</li></br />
-  <li><strong>list</strong> - returns a list, containing the usernames of all the clients currently registered within the server.</li></br />
+  <li><strong>send_al <em>message</em> <em>port_number</em></strong> - broadcasts the message to all the registered clients. Server/client responses will be written to the specified port on the client</li><br />
+  <li><strong>list</strong> - returns a list, containing the usernames of all the clients currently registered within the server.</li><br />
   <li><strong>send_file_to <em>username</em> <em>filepath</em> <em>port</em></strong> - returns the address and the port at which the client that the file is intended for will be listening for messages. </li><br />
 </ul>
 
