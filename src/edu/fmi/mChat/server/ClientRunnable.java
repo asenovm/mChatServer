@@ -7,6 +7,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
 
 import edu.fmi.mChat.server.model.User;
 import edu.fmi.mChat.server.request.MetaRequest;
@@ -25,12 +26,16 @@ public class ClientRunnable implements Runnable {
 
 	private final ChatServer server;
 
-	private final Logger logger;
+	private static final Logger logger;
+
+	static {
+		PropertyConfigurator.configure("log4j.properties");
+		logger = Logger.getLogger(ClientRunnable.class);
+	}
 
 	public ClientRunnable(final Socket clientSocket, final ChatServer server) {
 		this.clientSocket = clientSocket;
 		this.server = server;
-		logger = Logger.getLogger(ClientRunnable.class);
 	}
 
 	@Override

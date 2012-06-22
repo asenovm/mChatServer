@@ -1,6 +1,7 @@
 package edu.fmi.mChat.server;
 
 import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
 
 import edu.fmi.mChat.server.enums.RequestType;
 import edu.fmi.mChat.server.model.User;
@@ -22,6 +23,7 @@ public class RequestParser {
 	private static final Logger logger;
 
 	static {
+		PropertyConfigurator.configure("log4j.properties");
 		logger = Logger.getLogger(RequestParser.class);
 	}
 
