@@ -1,7 +1,3 @@
-The mChat chat client is a client for the mChat chat server.
-It supports p2p file transfering, asynchronous server calls
-and works under a custom protocol.
-
 Copyright (C) 2012  Martin Asenov Asenov
 
 This program is free software; you can redistribute it and/or
