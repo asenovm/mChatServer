@@ -25,6 +25,9 @@ public class SendFileMessageResponse extends BaseServerResponse {
 		this.filePath = filePath;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String toString() {
 		final StringBuilder builder = new StringBuilder();
@@ -43,11 +46,17 @@ public class SendFileMessageResponse extends BaseServerResponse {
 		return builder.toString();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected RequestType getRequestType() {
 		return RequestType.SEND_FILE;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void send(ChatServer server, Writer clientWriter) throws IOException {
 		clientWriter.write(toString());

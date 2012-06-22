@@ -41,6 +41,11 @@ public class User {
 		return username;
 	}
 
+	/**
+	 * Returns the remote address of this user
+	 * 
+	 * @return the remote address of this user
+	 */
 	public RemoteAddress getRemoteAddress() {
 		return remoteAddress;
 	}

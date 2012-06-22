@@ -51,6 +51,13 @@ public class RegisterRequest implements MetaRequest {
 		return RequestType.REGISTER;
 	}
 
+	/**
+	 * Returns the port number at which this user will be listening for
+	 * asynchronous server responses
+	 * 
+	 * @return the port number at which this user will be listening for
+	 *         asynchronous server responses
+	 */
 	public int getPortNumber() {
 		return portNumber;
 	}

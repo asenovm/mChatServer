@@ -17,6 +17,13 @@ import edu.fmi.mChat.server.response.RegisterResponse;
 import edu.fmi.mChat.server.response.SendFileMessageResponse;
 import edu.fmi.mChat.server.response.SendMessageResponse;
 
+/**
+ * A factory used for creating the appropriate response to be sent to the
+ * clients
+ * 
+ * @author martin
+ * 
+ */
 public class ResponseFactory {
 
 	/**
@@ -25,6 +32,17 @@ public class ResponseFactory {
 	@SuppressWarnings("unused")
 	private static final String TAG = ResponseFactory.class.getSimpleName();
 
+	/**
+	 * Creates a new response object
+	 * 
+	 * @param metaRequest
+	 *            the request that has been sent
+	 * @param requestSource
+	 *            the IP address of the sender of this request
+	 * @param server
+	 *            the server instance that is to handle the response
+	 * @return the response object that is to be sent to the clients
+	 */
 	public static BaseServerResponse createResponse(final MetaRequest metaRequest,
 			final InetAddress requestSource, final ChatServer server) {
 		switch (metaRequest.getRequestType()) {

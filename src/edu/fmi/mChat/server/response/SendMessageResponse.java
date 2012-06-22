@@ -26,6 +26,9 @@ public class SendMessageResponse extends BaseServerResponse {
 		this.message = message;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String toString() {
 		final StringBuilder builder = new StringBuilder();
@@ -37,11 +40,17 @@ public class SendMessageResponse extends BaseServerResponse {
 		return builder.toString();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected RequestType getRequestType() {
 		return RequestType.SEND_MESSAGE;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void send(final ChatServer server, Writer clientWriter) throws IOException {
 		final boolean result = server.sendMessage(receiver, this);

@@ -26,6 +26,9 @@ public class RegisterResponse extends BaseServerResponse {
 		this.username = username;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String toString() {
 		final StringBuilder stringBuilder = new StringBuilder();
@@ -43,11 +46,17 @@ public class RegisterResponse extends BaseServerResponse {
 		return stringBuilder.toString();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected RequestType getRequestType() {
 		return RequestType.REGISTER;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void send(final ChatServer server, final Writer clientWriter) throws IOException {
 		clientWriter.write(toString());

@@ -15,16 +15,21 @@ public class CloseConnectionResponse extends BaseServerResponse {
 	@SuppressWarnings("unused")
 	private static final String TAG = CloseConnectionResponse.class.getSimpleName();
 
-	private final boolean isSuccessful;
-
 	public CloseConnectionResponse(final boolean isOperationSuccessfull) {
-		this.isSuccessful = isOperationSuccessfull;
+		if (isOperationSuccessfull) {
+			responseCode = ResponseCode.OPERATION_SUCCESSFUL;
+		} else {
+			responseCode = ResponseCode.OPERATION_UNSUCCESSFUL;
+		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String toString() {
 		final StringBuilder stringBuilder = new StringBuilder();
-		if (isSuccessful) {
+		if (responseCode == ResponseCode.OPERATION_SUCCESSFUL) {
 			stringBuilder.append(ResponseCode.OPERATION_SUCCESSFUL);
 			stringBuilder.append(" ");
 			stringBuilder.append("bye successful");
@@ -36,11 +41,17 @@ public class CloseConnectionResponse extends BaseServerResponse {
 		return stringBuilder.toString();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected RequestType getRequestType() {
 		return RequestType.CLOSE_CONNECTION;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void send(ChatServer server, Writer clientWriter) throws IOException {
 		clientWriter.write(toString());

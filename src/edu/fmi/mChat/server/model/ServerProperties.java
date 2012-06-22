@@ -10,6 +10,13 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
+/**
+ * A value object holding the properties related to the configuration of the
+ * server (in terms of port used).
+ * 
+ * @author martin
+ * 
+ */
 public class ServerProperties {
 
 	/**
@@ -18,8 +25,14 @@ public class ServerProperties {
 	@SuppressWarnings("unused")
 	private static final String TAG = ServerProperties.class.getSimpleName();
 
+	/**
+	 * {@value}
+	 */
 	private static final String KEY_SERVER_ADDRESS = "server.address";
 
+	/**
+	 * {@value}
+	 */
 	private static final String KEY_SERVER_PORT = "server.port";
 
 	private static final Logger logger;
@@ -31,6 +44,12 @@ public class ServerProperties {
 		logger = Logger.getLogger(ServerProperties.class);
 	}
 
+	/**
+	 * Constructs new server properties using the file specified for reading the
+	 * respective values
+	 * 
+	 * @param propertiesFile
+	 */
 	public ServerProperties(final String propertiesFile) {
 		properties = new HashMap<String, String>();
 		try {
@@ -47,10 +66,20 @@ public class ServerProperties {
 		}
 	}
 
+	/**
+	 * Returns the address at which this server will be running
+	 * 
+	 * @return the address at which this server is running
+	 */
 	public String getAddress() {
 		return properties.get(KEY_SERVER_ADDRESS);
 	}
 
+	/**
+	 * Returns the port number at which this server will receive requests
+	 * 
+	 * @return the port number at which this server receives requests
+	 */
 	public int getServerPort() {
 		int portNumber = 0;
 		try {

@@ -22,18 +22,36 @@ public class SendMessageRequest implements MetaRequest {
 		this.message = message;
 	}
 
+	/**
+	 * Returns the username of the sender of this request
+	 * 
+	 * @return the username of the sender of this request
+	 */
 	public String getSender() {
 		return sender;
 	}
 
+	/**
+	 * Returns the username of the receiver of this message
+	 * 
+	 * @return the username of the receiver of this message
+	 */
 	public String getReceiver() {
 		return receiver;
 	}
 
+	/**
+	 * Returns the message that is to be transmitted to the receiver
+	 * 
+	 * @return the message that is to be transmitted to the receiver
+	 */
 	public String getMessage() {
 		return message;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public RequestType getRequestType() {
 		return RequestType.SEND_MESSAGE;

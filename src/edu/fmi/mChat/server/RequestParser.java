@@ -12,6 +12,12 @@ import edu.fmi.mChat.server.request.RegisterRequest;
 import edu.fmi.mChat.server.request.SendFileRequest;
 import edu.fmi.mChat.server.request.SendMessageRequest;
 
+/**
+ * A parser for the requests that are sent by the clients
+ * 
+ * @author martin
+ * 
+ */
 public class RequestParser {
 
 	/**

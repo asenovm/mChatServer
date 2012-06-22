@@ -10,6 +10,9 @@ public class ListActiveUsersRequest implements MetaRequest {
 	@SuppressWarnings("unused")
 	private static final String TAG = ListActiveUsersRequest.class.getSimpleName();
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public RequestType getRequestType() {
 		return RequestType.LIST_ACTIVE_USERS;

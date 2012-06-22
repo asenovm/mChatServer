@@ -7,6 +7,7 @@ import java.util.Collection;
 import edu.fmi.mChat.server.ChatServer;
 import edu.fmi.mChat.server.enums.RequestType;
 import edu.fmi.mChat.server.model.User;
+import edu.fmi.mChat.server.utils.ResponseCode;
 
 public class ListActiveUsersResponse extends BaseServerResponse {
 
@@ -22,10 +23,14 @@ public class ListActiveUsersResponse extends BaseServerResponse {
 		this.activeUsers = activeUsers;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String toString() {
 		final StringBuilder stringBuilder = new StringBuilder();
-		stringBuilder.append("200 ok ");
+		stringBuilder.append(ResponseCode.OPERATION_SUCCESSFUL);
+		stringBuilder.append(" ok ");
 		for (final User user : activeUsers) {
 			stringBuilder.append(user.getUsername());
 			stringBuilder.append(" ");
@@ -34,11 +39,17 @@ public class ListActiveUsersResponse extends BaseServerResponse {
 		return stringBuilder.toString();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected RequestType getRequestType() {
 		return RequestType.LIST_ACTIVE_USERS;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void send(ChatServer server, Writer clientWriter) throws IOException {
 		clientWriter.write(toString());

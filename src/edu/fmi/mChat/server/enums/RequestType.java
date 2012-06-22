@@ -1,8 +1,32 @@
 package edu.fmi.mChat.server.enums;
 
+/**
+ * An enumeration specifying the type of the request that is being handled
+ * 
+ * @author martin
+ * 
+ */
 public enum RequestType {
-	REGISTER("user"), SEND_MESSAGE("send_to"), CLOSE_CONNECTION("bye"), LIST_ACTIVE_USERS("list"), SEND_FILE(
-			"send_file_to");
+	/**
+	 * {@value}
+	 */
+	REGISTER("user"),
+	/**
+	 * {@value}
+	 */
+	SEND_MESSAGE("send_to"),
+	/**
+	 * {@value}
+	 */
+	CLOSE_CONNECTION("bye"),
+	/**
+	 * {@value}
+	 */
+	LIST_ACTIVE_USERS("list"),
+	/**
+	 * {@value}
+	 */
+	SEND_FILE("send_file_to");
 
 	private final String requestType;
 
@@ -10,6 +34,9 @@ public enum RequestType {
 		this.requestType = requestType;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String toString() {
 		return requestType;
