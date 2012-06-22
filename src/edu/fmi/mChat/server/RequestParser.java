@@ -39,28 +39,51 @@ public class RequestParser {
 	 * 
 	 */
 	public MetaRequest parse(final User requestSender, final String request) {
+
 		final int portNumber = Integer.parseInt(request.substring(request.lastIndexOf("port")
 				+ "port".length() + 1));
 		final String[] parsedRequest = request.split(" ");
-		if (REQUEST_REGISTER.equals(parsedRequest[0])) {
-			return new RegisterRequest(parsedRequest[1], portNumber);
-		} else if (REQUEST_SEND_MESSAGE.equals(parsedRequest[0])) {
-			return new SendMessageRequest(requestSender.getUsername(), parsedRequest[1], request
-					.substring(request.indexOf(parsedRequest[1]) + parsedRequest[1].length() + 1,
-							request.lastIndexOf("port")));
-		} else if (REQUEST_BYE.equals(parsedRequest[0])) {
-			return new CloseConnectionRequest(requestSender);
-		} else if (REQUEST_LIST.equals(parsedRequest[0])) {
-			return new ListActiveUsersRequest();
-		} else if (REQUEST_SEND_FILE.equals(parsedRequest[0])) {
-			System.out.println("file path is "
-					+ request.substring(request.indexOf(parsedRequest[1])
-							+ parsedRequest[1].length() + 1, request.indexOf("port") - 1));
-			return new SendFileRequest(parsedRequest[1], request.substring(request
-					.indexOf(parsedRequest[1])
-					+ parsedRequest[1].length() + 1, request.indexOf("port") - 1), portNumber);
+		final String requestType = parsedRequest[0];
+
+		if (REQUEST_REGISTER.equals(requestType)) {
+			return parseRegisterRequest(parsedRequest, portNumber);
+		} else if (REQUEST_SEND_MESSAGE.equals(requestType)) {
+			return parseSendMessageRequest(requestSender, parsedRequest, request);
+		} else if (REQUEST_BYE.equals(requestType)) {
+			return parseCloseConnectionRequest(requestSender);
+		} else if (REQUEST_LIST.equals(requestType)) {
+			return parseListActiveUsersRequest();
+		} else if (REQUEST_SEND_FILE.equals(requestType)) {
+			return parseSendFileRequest(parsedRequest, request, portNumber);
 		}
 
 		return null;
+	}
+
+	private MetaRequest parseRegisterRequest(final String[] parsedRequest, final int portNumber) {
+		return new RegisterRequest(parsedRequest[1], portNumber);
+	}
+
+	private MetaRequest parseSendMessageRequest(final User requestSender,
+			final String[] parsedRequest, final String request) {
+		return new SendMessageRequest(requestSender.getUsername(), parsedRequest[1], request
+				.substring(request.indexOf(parsedRequest[1]) + parsedRequest[1].length() + 1,
+						request.lastIndexOf("port")));
+	}
+
+	private MetaRequest parseCloseConnectionRequest(final User requestSender) {
+		return new CloseConnectionRequest(requestSender);
+	}
+
+	private MetaRequest parseListActiveUsersRequest() {
+		return new ListActiveUsersRequest();
+
+	}
+
+	private MetaRequest parseSendFileRequest(final String[] parsedRequest, final String request,
+			final int portNumber) {
+		return new SendFileRequest(parsedRequest[1], request.substring(request
+				.indexOf(parsedRequest[1])
+				+ parsedRequest[1].length() + 1, request.indexOf("port") - 1), portNumber);
 	}
 }
