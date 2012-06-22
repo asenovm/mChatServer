@@ -44,6 +44,7 @@ public class ClientRunnable implements Runnable {
 			final RequestParser parser = new RequestParser();
 
 			final String request = reader.readLine();
+			System.out.println("request is " + request);
 			final int portNumber = Integer.parseInt(request.substring(request.lastIndexOf(" ") + 1,
 					request.length()));
 
