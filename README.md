@@ -8,8 +8,8 @@ The server has the following functionality:
 <ul>
   <li><strong>The</strong> configuration of the server is read from a file that is called <strong>server.properties</strong>. The user can confgire the port at which the server will listen for requests</li> <br />
   <li><strong>The</strong> server uses the <strong>log4j</strong> logging utility for logging. This allows for tuning the amount of logging work done by specifying different settings in the <strong>log4j.properties</strong> file</li> <br />
-  <li><strong>The server receives requests from users, handles them and afterwards writes responses</strong></li>
-  <li><strong>The server can be used for only interconnecting users so as to allow for a p2p transfer.</strong></li>
+  <li><strong>The</strong> server receives requests from users, handles them and afterwards writes responses.</li> <br />
+  <li><strong>The</strong> server can be used for only interconnecting users so as to allow for a p2p transfer.</li>
 </ul>
 
 <h2>Supported protocol</h2>
