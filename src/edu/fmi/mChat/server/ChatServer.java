@@ -15,6 +15,7 @@ import java.util.concurrent.Executors;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
+import edu.fmi.mChat.server.model.ServerProperties;
 import edu.fmi.mChat.server.model.User;
 import edu.fmi.mChat.server.response.SendMessageResponse;
 import edu.fmi.mChat.server.utils.RemoteAddress;
@@ -26,8 +27,6 @@ public class ChatServer {
 	 */
 	@SuppressWarnings("unused")
 	private static final String TAG = ChatServer.class.getSimpleName();
-
-	private static final int PORT_NUMBER_INCOMING = 65535;
 
 	private final Map<RemoteAddress, User> registeredUsers;
 
@@ -98,7 +97,8 @@ public class ChatServer {
 	public static void main(String[] args) {
 		final ChatServer server = new ChatServer();
 		try {
-			final ServerSocket serverSocket = new ServerSocket(PORT_NUMBER_INCOMING);
+			final ServerProperties serverProperties = new ServerProperties("server.properties");
+			final ServerSocket serverSocket = new ServerSocket(serverProperties.getServerPort());
 			final ExecutorService executor = Executors.newCachedThreadPool();
 			while (true) {
 				final Socket clientSocket = serverSocket.accept();
