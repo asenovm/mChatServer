@@ -1,5 +1,8 @@
 package edu.fmi.mChat.server;
 
+import org.apache.log4j.Logger;
+
+import edu.fmi.mChat.server.enums.RequestType;
 import edu.fmi.mChat.server.model.User;
 import edu.fmi.mChat.server.request.CloseConnectionRequest;
 import edu.fmi.mChat.server.request.ListActiveUsersRequest;
@@ -16,18 +19,11 @@ public class RequestParser {
 	@SuppressWarnings("unused")
 	private static final String TAG = RequestParser.class.getSimpleName();
 
-	/**
-	 * {@value}
-	 */
-	private static final String REQUEST_REGISTER = "user";
+	private static final Logger logger;
 
-	private static final String REQUEST_SEND_MESSAGE = "send_to";
-
-	private static final String REQUEST_BYE = "bye";
-
-	private static final String REQUEST_LIST = "list";
-
-	private static final String REQUEST_SEND_FILE = "send_file_to";
+	static {
+		logger = Logger.getLogger(RequestParser.class);
+	}
 
 	/**
 	 * Returns a meta request associated with the request String specified.
@@ -45,15 +41,15 @@ public class RequestParser {
 		final String[] parsedRequest = request.split(" ");
 		final String requestType = parsedRequest[0];
 
-		if (REQUEST_REGISTER.equals(requestType)) {
+		if (RequestType.REGISTER.toString().equals(requestType)) {
 			return parseRegisterRequest(parsedRequest, portNumber);
-		} else if (REQUEST_SEND_MESSAGE.equals(requestType)) {
+		} else if (RequestType.SEND_MESSAGE.toString().equals(requestType)) {
 			return parseSendMessageRequest(requestSender, parsedRequest, request);
-		} else if (REQUEST_BYE.equals(requestType)) {
+		} else if (RequestType.CLOSE_CONNECTION.toString().equals(requestType)) {
 			return parseCloseConnectionRequest(requestSender);
-		} else if (REQUEST_LIST.equals(requestType)) {
+		} else if (RequestType.LIST_ACTIVE_USERS.toString().equals(requestType)) {
 			return parseListActiveUsersRequest();
-		} else if (REQUEST_SEND_FILE.equals(requestType)) {
+		} else if (RequestType.SEND_FILE.toString().equals(requestType)) {
 			return parseSendFileRequest(parsedRequest, request, portNumber);
 		}
 
@@ -61,27 +57,32 @@ public class RequestParser {
 	}
 
 	private MetaRequest parseRegisterRequest(final String[] parsedRequest, final int portNumber) {
+		logger.info("new register request");
 		return new RegisterRequest(parsedRequest[1], portNumber);
 	}
 
 	private MetaRequest parseSendMessageRequest(final User requestSender,
 			final String[] parsedRequest, final String request) {
+		logger.info("new send message request");
 		return new SendMessageRequest(requestSender.getUsername(), parsedRequest[1], request
 				.substring(request.indexOf(parsedRequest[1]) + parsedRequest[1].length() + 1,
 						request.lastIndexOf("port")));
 	}
 
 	private MetaRequest parseCloseConnectionRequest(final User requestSender) {
+		logger.info("new close connection request");
 		return new CloseConnectionRequest(requestSender);
 	}
 
 	private MetaRequest parseListActiveUsersRequest() {
+		logger.info("new list active users request");
 		return new ListActiveUsersRequest();
 
 	}
 
 	private MetaRequest parseSendFileRequest(final String[] parsedRequest, final String request,
 			final int portNumber) {
+		logger.info("new send file request");
 		return new SendFileRequest(parsedRequest[1], request.substring(request
 				.indexOf(parsedRequest[1])
 				+ parsedRequest[1].length() + 1, request.indexOf("port") - 1), portNumber);
