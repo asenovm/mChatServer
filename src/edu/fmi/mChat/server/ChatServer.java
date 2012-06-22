@@ -147,7 +147,10 @@ public class ChatServer {
 	 *         case no user with such address has been found
 	 */
 	public User getUser(final RemoteAddress address) {
-		return registeredUsers.get(address);
+		lock.readLock().lock();
+		final User result = registeredUsers.get(address);
+		lock.readLock().unlock();
+		return result;
 	}
 
 	/**
