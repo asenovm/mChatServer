@@ -13,9 +13,16 @@ The server has the following functionality:
 </ul>
 
 <h2>Supported protocol</h2>
+<ul>
+  <li><em>user <username> <port_number></em> - registers the specified username within the server. No clients with the same username can be registered. Server responses will be written to the specified in the request port</li><br />
+  <li><em>send_to <username> <message> <port></em> - sends the specified message to the server. Server/client responses will be written to the specified port</li><br />
+  <li><em>send_al <message> <port_number></em> - broadcasts the message to all the registered clients. Server/client responses will be written to the specified port on the client</li></br />
+  <li><em>list</em> - returns a list, containing the usernames of all the clients currently registered within the server.</li></br />
+  <li><em>send_file_to <username> <filepath> <port></em> - returns the address and the port at which the client that the file is intended for will be listening for messages. </li><br />
+</ul>
 
 <h2>License</h2>
-The <strong>mChat</strong> client can be freely used and distributed under the terms of the GNU General Public License. For more information see the <strong>License</strong> file
+The <strong>mChat</strong> server can be freely used and distributed under the terms of the GNU General Public License. For more information see the <strong>License</strong> file
 
 <h2>Author</h2>
 <strong>Martin Asenov Asenov</strong> <br />
