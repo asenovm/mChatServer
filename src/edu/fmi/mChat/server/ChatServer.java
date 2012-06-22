@@ -11,6 +11,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
@@ -32,6 +34,8 @@ public class ChatServer {
 
 	private static final Logger logger;
 
+	private final ReadWriteLock lock;
+
 	static {
 		PropertyConfigurator.configure("log4j.properties");
 		logger = org.apache.log4j.Logger.getLogger(ChatServer.class);
@@ -40,28 +44,31 @@ public class ChatServer {
 
 	/* package */ChatServer() {
 		registeredUsers = new HashMap<RemoteAddress, User>();
+		lock = new ReentrantReadWriteLock();
 	}
 
-	public synchronized boolean registerUser(final String username, final InetAddress userAddress,
+	public boolean registerUser(final String username, final InetAddress userAddress,
 			final int portNumber) {
-		for (final User user : registeredUsers.values()) {
-			if (user.getUsername().equals(username)) {
-				return false;
-			}
+		if (getUser(username) != null) {
+			return false;
 		}
 
 		final RemoteAddress remoteAddress = new RemoteAddress(userAddress, portNumber);
+		lock.writeLock().lock();
 		registeredUsers.put(remoteAddress, new User(username, remoteAddress));
+		lock.writeLock().unlock();
 		return true;
 	}
 
 	public boolean sendMessage(final String receiver, SendMessageResponse response) {
 		if (receiver.length() == 0) {
+			lock.readLock().lock();
 			for (final User user : registeredUsers.values()) {
 				writeResponseToSocket(response, user);
 			}
+			lock.readLock().unlock();
 		} else {
-			User receiverUser = findUser(receiver);
+			User receiverUser = getUser(receiver);
 			if (receiverUser == null) {
 				return false;
 			}
@@ -69,15 +76,6 @@ public class ChatServer {
 			writeResponseToSocket(response, receiverUser);
 		}
 		return true;
-	}
-
-	private User findUser(final String username) {
-		for (final User user : registeredUsers.values()) {
-			if (user.getUsername().equals(username)) {
-				return user;
-			}
-		}
-		return null;
 	}
 
 	private void writeResponseToSocket(final SendMessageResponse response, final User receiverUser) {
@@ -114,20 +112,30 @@ public class ChatServer {
 		return registeredUsers.get(address);
 	}
 
-	public synchronized boolean closeConnection(final User user) {
-		return registeredUsers.remove(user.getRemoteAddress()) != null;
+	public boolean closeConnection(final User user) {
+		lock.writeLock().lock();
+		final boolean result = registeredUsers.remove(user.getRemoteAddress()) != null;
+		lock.writeLock().unlock();
+		return result;
 	}
 
-	public synchronized Collection<User> getActiveUsers() {
-		return Collections.unmodifiableCollection(registeredUsers.values());
+	public Collection<User> getActiveUsers() {
+		lock.readLock().lock();
+		final Collection<User> result = Collections
+				.unmodifiableCollection(registeredUsers.values());
+		lock.readLock().unlock();
+		return result;
 	}
 
-	public synchronized User getUser(final String username) {
+	public User getUser(final String username) {
+		lock.readLock().lock();
 		for (final User user : registeredUsers.values()) {
 			if (user.getUsername().equals(username)) {
+				lock.readLock().unlock();
 				return user;
 			}
 		}
+		lock.readLock().unlock();
 		return null;
 	}
 }
