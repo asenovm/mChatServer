@@ -31,6 +31,10 @@ public class ResponseFactory {
 	 */
 	@SuppressWarnings("unused")
 	private static final String TAG = ResponseFactory.class.getSimpleName();
+	
+	private ResponseFactory(){
+		//blank
+	}
 
 	/**
 	 * Creates a new response object
