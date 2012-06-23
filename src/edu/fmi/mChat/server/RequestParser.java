@@ -51,7 +51,8 @@ public class RequestParser {
 
 		if (RequestType.REGISTER.toString().equals(requestType)) {
 			return parseRegisterRequest(parsedRequest, portNumber);
-		} else if (RequestType.SEND_MESSAGE.toString().equals(requestType)) {
+		} else if (RequestType.SEND_MESSAGE.toString().equals(requestType)
+				|| RequestType.SEND_MESSAGE_TO_ALL.toString().equals(requestType)) {
 			return parseSendMessageRequest(requestSender, parsedRequest, request);
 		} else if (RequestType.CLOSE_CONNECTION.toString().equals(requestType)) {
 			return parseCloseConnectionRequest(requestSender);
@@ -72,6 +73,11 @@ public class RequestParser {
 	private MetaRequest parseSendMessageRequest(final User requestSender,
 			final String[] parsedRequest, final String request) {
 		logger.info("new send message request");
+		if (request.contains("send_all")) {
+			logger.info("send to all request");
+			return new SendMessageRequest(requestSender.getUsername(), "", request.substring(
+					request.indexOf(" ") + 1, request.indexOf("port")));
+		}
 		return new SendMessageRequest(requestSender.getUsername(), parsedRequest[1], request
 				.substring(request.indexOf(parsedRequest[1]) + parsedRequest[1].length() + 1,
 						request.lastIndexOf("port")));

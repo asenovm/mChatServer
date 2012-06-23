@@ -49,6 +49,7 @@ public class ResponseFactory {
 		case REGISTER:
 			return createRegisterResponse((RegisterRequest) metaRequest, requestSource, server);
 		case SEND_MESSAGE:
+		case SEND_MESSAGE_TO_ALL:
 			return createSendMessageResponse((SendMessageRequest) metaRequest);
 		case CLOSE_CONNECTION:
 			return createByeResponse((CloseConnectionRequest) metaRequest, server);

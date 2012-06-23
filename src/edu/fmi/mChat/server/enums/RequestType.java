@@ -18,6 +18,10 @@ public enum RequestType {
 	/**
 	 * {@value}
 	 */
+	SEND_MESSAGE_TO_ALL("send_all"),
+	/**
+	 * {@value}
+	 */
 	CLOSE_CONNECTION("bye"),
 	/**
 	 * {@value}

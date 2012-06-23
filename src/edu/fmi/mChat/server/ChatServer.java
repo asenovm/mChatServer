@@ -37,7 +37,7 @@ public class ChatServer {
 	@SuppressWarnings("unused")
 	private static final String TAG = ChatServer.class.getSimpleName();
 
-	private final Map<RemoteAddress, User> registeredUsers;
+	private volatile Map<RemoteAddress, User> registeredUsers;
 
 	private static final Logger logger;
 
@@ -89,11 +89,14 @@ public class ChatServer {
 	 * @return whether or not the message has been successfully sent to the
 	 *         intended receiver
 	 */
-	public boolean sendMessage(final String receiver, SendMessageResponse response) {
+	public boolean sendMessage(final String sender, final String receiver,
+			SendMessageResponse response) {
 		if (receiver.length() == 0) {
 			lock.readLock().lock();
 			for (final User user : registeredUsers.values()) {
-				writeResponseToSocket(response, user);
+				if (!user.getUsername().equals(sender)) {
+					writeResponseToSocket(response, user);
+				}
 			}
 			lock.readLock().unlock();
 		} else {

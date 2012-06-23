@@ -53,7 +53,7 @@ public class SendMessageResponse extends BaseServerResponse {
 	 */
 	@Override
 	public void send(final ChatServer server, Writer clientWriter) throws IOException {
-		final boolean result = server.sendMessage(receiver, this);
+		final boolean result = server.sendMessage(sender, receiver, this);
 		if (result) {
 			clientWriter.write("200 ok message to " + receiver + "sent successfully.");
 			clientWriter.flush();
